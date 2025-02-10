@@ -2,6 +2,8 @@
 <html lang="ru">
   <head>
     <meta charset="UTF-8" />
+    <!-- Мета-тег viewport для корректного отображения на мобильных устройствах -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Фразеологизмы: Выбор темы</title>
     <!-- Подключение Google Fonts -->
     <link
@@ -66,6 +68,12 @@
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         gap: 20px;
       }
+      /* Адаптив: на телефоне – один блок в колонну */
+      @media (max-width: 600px) {
+        .topics-grid {
+          grid-template-columns: 1fr;
+        }
+      }
       .topic-block {
         background: #f1f3f5;
         border-radius: 8px;
@@ -76,9 +84,14 @@
         transition: transform 0.3s, box-shadow 0.3s;
         cursor: pointer;
       }
-      .topic-block:hover {
+      /* Активное состояние при клике */
+      .topic-block.active {
         transform: translateY(-5px);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+      .topic-block.active .idioms-content {
+        opacity: 1;
+        visibility: visible;
       }
       .topic-title {
         font-size: 1.4rem;
@@ -101,10 +114,6 @@
         visibility: hidden;
         transition: opacity 0.3s, visibility 0.3s;
         overflow-y: auto;
-      }
-      .topic-block:hover .idioms-content {
-        opacity: 1;
-        visibility: visible;
       }
       .idioms-content ul {
         list-style: none;
@@ -182,8 +191,7 @@
     <div class="container">
       <h1>Фразеологизмы</h1>
       <p>
-        Наведите курсор на тему, чтобы увидеть фразеологизмы и историю их
-        возникновения.
+        Нажмите на тему, чтобы отобразить фразеологизмы и историю их возникновения.
       </p>
       <button id="toggleDarkMode" class="toggle-button">Темная тема</button>
       <div id="topicsContainer" class="topics-grid">
@@ -195,7 +203,7 @@
     </footer>
 
     <script>
-      // Объект с данными: темы и соответствующие фразеологизмы с информацией об их происхождении
+      // Объект с данными: темы и фразеологизмы с информацией об их происхождении
       const idiomsData = {
         love: [
           {
@@ -455,7 +463,8 @@
           {
             phrase: "Страсти бушуют, как шторм",
             meaning: "Эмоции могут быть бурными и непредсказуемыми",
-            origin: "Фразеологизм, отражающий метафору стихийной силы чувств."
+            origin:
+              "Фразеологизм, отражающий метафору стихийной силы чувств."
           },
           {
             phrase: "Сердце в огне",
@@ -517,7 +526,6 @@
               "Фразеологизм, возникший в спорте и военных изречениях, подчеркивающий ценность смелости."
           }
         ],
-        /* Новые темы */
         nature: [
           {
             phrase: "Природа вдохновляет",
@@ -625,11 +633,11 @@
       function createTopicBlocks() {
         for (const topic in idiomsData) {
           if (idiomsData.hasOwnProperty(topic)) {
-            // Создаем блок темы
+            // Создаём блок темы
             const topicBlock = document.createElement("div");
             topicBlock.className = "topic-block";
 
-            // Заголовок темы (на русском)
+            // Заголовок темы
             const titleDiv = document.createElement("div");
             titleDiv.className = "topic-title";
             titleDiv.textContent = topicNames[topic] || topic;
@@ -639,7 +647,7 @@
             const idiomsContent = document.createElement("div");
             idiomsContent.className = "idioms-content";
 
-            // Создаем список фразеологизмов
+            // Создаём список фразеологизмов
             const ul = document.createElement("ul");
             idiomsData[topic].forEach((item) => {
               const li = document.createElement("li");
@@ -661,11 +669,16 @@
       const toggleButton = document.getElementById("toggleDarkMode");
       toggleButton.addEventListener("click", () => {
         document.body.classList.toggle("dark");
-        if (document.body.classList.contains("dark")) {
-          toggleButton.textContent = "Светлая тема";
-        } else {
-          toggleButton.textContent = "Темная тема";
-        }
+        toggleButton.textContent = document.body.classList.contains("dark")
+          ? "Светлая тема"
+          : "Темная тема";
+      });
+
+      // Вешаем обработчик клика на каждый блок темы для показа/скрытия информации
+      document.querySelectorAll(".topic-block").forEach((block) => {
+        block.addEventListener("click", function () {
+          this.classList.toggle("active");
+        });
       });
     </script>
   </body>
