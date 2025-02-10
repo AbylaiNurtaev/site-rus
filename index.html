@@ -9,6 +9,7 @@
       rel="stylesheet"
     />
     <style>
+      /* Базовые стили */
       * {
         box-sizing: border-box;
       }
@@ -19,7 +20,7 @@
         background: linear-gradient(135deg, #f8f9fa, #e9ecef);
         color: #333;
         display: flex;
-        justify-content: center;
+        flex-direction: column;
         align-items: center;
         min-height: 100vh;
       }
@@ -30,6 +31,7 @@
         max-width: 1200px;
         width: 95%;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 0.8s ease-out;
       }
       h1,
       p {
@@ -43,6 +45,21 @@
         font-size: 1rem;
         margin-bottom: 30px;
       }
+      /* Кнопка переключения темы */
+      .toggle-button {
+        background: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 10px auto;
+        display: block;
+        transition: background 0.3s;
+      }
+      .toggle-button:hover {
+        background: #0056b3;
+      }
       /* Стили для сетки блоков */
       .topics-grid {
         display: grid;
@@ -53,7 +70,7 @@
         background: #f1f3f5;
         border-radius: 8px;
         padding: 20px;
-        min-height: 300px; /* Блоки повыше */
+        min-height: 300px;
         position: relative;
         overflow: hidden;
         transition: transform 0.3s, box-shadow 0.3s;
@@ -70,7 +87,7 @@
         color: #343a40;
         text-align: center;
       }
-      /* Скрытый контейнер для фразеологизмов */
+      /* Скрытый контейнер с фразеологизмами */
       .idioms-content {
         background: rgba(255, 255, 255, 0.95);
         position: absolute;
@@ -102,11 +119,62 @@
       .idioms-content li strong {
         color: #343a40;
       }
-      .origin {
-        display: block;
-        font-size: 0.85rem;
+      .idioms-content li em {
+        font-style: italic;
         color: #777;
-        margin-top: 5px;
+      }
+      /* Анимация появления контейнера */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      /* Футер */
+      footer.footer {
+        text-align: center;
+        margin: 20px;
+        font-size: 0.9rem;
+        color: #777;
+      }
+      /* Стили для тёмной темы */
+      body.dark {
+        background: linear-gradient(135deg, #1c1c1c, #333);
+        color: #eee;
+      }
+      body.dark .container {
+        background: #444;
+        color: #eee;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      }
+      body.dark h1 {
+        color: #66aaff;
+      }
+      body.dark .topic-block {
+        background: #555;
+        color: #eee;
+      }
+      body.dark .topic-title {
+        color: #ddd;
+      }
+      body.dark .idioms-content {
+        background: rgba(68, 68, 68, 0.95);
+      }
+      body.dark .idioms-content li {
+        color: #ccc;
+      }
+      body.dark .toggle-button {
+        background: #66aaff;
+      }
+      body.dark .toggle-button:hover {
+        background: #5599dd;
+      }
+      body.dark footer.footer {
+        color: #bbb;
       }
     </style>
   </head>
@@ -117,10 +185,14 @@
         Наведите курсор на тему, чтобы увидеть фразеологизмы и историю их
         возникновения.
       </p>
+      <button id="toggleDarkMode" class="toggle-button">Темная тема</button>
       <div id="topicsContainer" class="topics-grid">
         <!-- Блоки тем будут динамически добавлены сюда -->
       </div>
     </div>
+    <footer class="footer">
+      <p>© 2025 Фразеологизмы. Все права защищены.</p>
+    </footer>
 
     <script>
       // Объект с данными: темы и соответствующие фразеологизмы с информацией об их происхождении
@@ -444,6 +516,87 @@
             origin:
               "Фразеологизм, возникший в спорте и военных изречениях, подчеркивающий ценность смелости."
           }
+        ],
+        /* Новые темы */
+        nature: [
+          {
+            phrase: "Природа вдохновляет",
+            meaning: "Природа побуждает к творчеству и размышлениям",
+            origin:
+              "Народное наблюдение о силе природных ландшафтов, вызывающих вдохновение."
+          },
+          {
+            phrase: "Как дерево, растущее к свету",
+            meaning:
+              "Человек стремится к развитию, подобно дереву, тянущемуся к солнцу",
+            origin:
+              "Образное выражение, возникшее из наблюдений за ростом растений."
+          },
+          {
+            phrase: "Ветер перемен",
+            meaning: "Приходят новые времена и перемены",
+            origin:
+              "Фразеологизм, отражающий постоянное движение и изменение в природе и жизни."
+          },
+          {
+            phrase: "Земля помнит",
+            meaning: "История оставляет следы, которые нельзя забыть",
+            origin:
+              "Народное выражение, подчёркивающее вечность памяти через связь с землей."
+          }
+        ],
+        humor: [
+          {
+            phrase: "Смех продлевает жизнь",
+            meaning: "Юмор помогает справляться со стрессами и проблемами",
+            origin:
+              "Народная мудрость, основанная на наблюдении за позитивным влиянием смеха."
+          },
+          {
+            phrase: "Шутка дня",
+            meaning: "Хорошее настроение можно найти в простой шутке",
+            origin:
+              "Фразеологизм, популяризированный в кругу друзей и на работе."
+          },
+          {
+            phrase: "Хохот без причины",
+            meaning: "Иногда радость и смех возникают сами по себе",
+            origin: "Выражение, описывающее спонтанное проявление эмоций."
+          },
+          {
+            phrase: "Улыбка – ключ к сердцу",
+            meaning: "Доброта и юмор могут открыть сердца людей",
+            origin:
+              "Народное выражение, подчеркивающее силу доброжелательности."
+          }
+        ],
+        money: [
+          {
+            phrase: "Деньги не пахнут",
+            meaning: "Деньги ценны независимо от их происхождения",
+            origin:
+              "Фразеологизм, возникший в античных временах и закрепившийся в культуре."
+          },
+          {
+            phrase: "Деньги – хорошие слуги, но плохие хозяева",
+            meaning: "Деньги должны служить человеку, а не управлять им",
+            origin:
+              "Народная поговорка, подчёркивающая необходимость разумного обращения с деньгами."
+          },
+          {
+            phrase: "Богатство не в золоте",
+            meaning:
+              "Истинное богатство измеряется не материальными благами, а духовными ценностями",
+            origin:
+              "Фразеологизм, отражающий древние философские взгляды на богатство."
+          },
+          {
+            phrase: "Деньги к деньгам",
+            meaning:
+              "Инвестиции и капитал способствуют дальнейшему накоплению богатства",
+            origin:
+              "Наблюдение за экономическими процессами, выраженное в виде пословицы."
+          }
         ]
       };
 
@@ -460,7 +613,10 @@
         family: "Семья",
         passion: "Страсти",
         knowledge: "Познание",
-        success: "Успех"
+        success: "Успех",
+        nature: "Природа",
+        humor: "Юмор",
+        money: "Деньги"
       };
 
       const topicsContainer = document.getElementById("topicsContainer");
@@ -500,6 +656,17 @@
       }
 
       createTopicBlocks();
+
+      // Переключатель темы (светлая/тёмная)
+      const toggleButton = document.getElementById("toggleDarkMode");
+      toggleButton.addEventListener("click", () => {
+        document.body.classList.toggle("dark");
+        if (document.body.classList.contains("dark")) {
+          toggleButton.textContent = "Светлая тема";
+        } else {
+          toggleButton.textContent = "Темная тема";
+        }
+      });
     </script>
   </body>
 </html>
